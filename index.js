@@ -18,6 +18,7 @@ async function run(){
    try{
     const brandCollection = client.db('cellIt').collection('brandOptions');
     const categoryCollection = client.db('cellIt').collection('categories');
+    const ordersCollection = client.db('cellIt').collection('orders');
 
     app.get('/brands', async(req, res)=>{
             const query = {}
@@ -40,6 +41,22 @@ async function run(){
     //        console.log(brands);
     //     res.send(brands);
     // })
+
+    app.get('/brands/:categoryId', async (req, res) => {
+        const categoryId = req.params.categoryId;
+        const query = { categoryId: categoryId };
+        const cursor = brandCollection.find(query);
+        const category = await cursor.toArray();
+        res.send(category);
+    });
+
+    app.post('/orders', async (req, res) => {
+        const booking = req.body;
+        const result = await ordersCollection.insertOne(booking);
+        res.send(result);
+    })
+
+
 
    }
    finally{}
