@@ -19,6 +19,7 @@ async function run(){
     const brandCollection = client.db('cellIt').collection('brandOptions');
     const categoryCollection = client.db('cellIt').collection('categories');
     const ordersCollection = client.db('cellIt').collection('orders');
+    const buyersCollection = client.db('cellIt').collection('buyers');
 
     app.get('/brands', async(req, res)=>{
             const query = {}
@@ -59,17 +60,15 @@ async function run(){
         res.send(order)
 })
 
-// app.get('/orders', async(req, res)=>{
-//     const query = {}
-//     const cursor = ordersCollection.find(query);
-//     const brands = await cursor.toArray();
-//     res.send(brands)
-// })
-
-
     app.post('/orders', async (req, res) => {
         const booking = req.body;
         const result = await ordersCollection.insertOne(booking);
+        res.send(result);
+    })
+
+    app.post('/buyers', async(req, res) =>{
+        const user = req.body;
+        const result = await buyersCollection.insertOne(user);
         res.send(result);
     })
 
