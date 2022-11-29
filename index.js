@@ -118,6 +118,19 @@ async function run(){
         const result = await buyersCollection.find(query).toArray();
         res.send(result);
     } )
+    app.get('/buyers', async(req, res) =>{
+        const email= req.query.email;
+        const query = {email};
+        const result = await buyersCollection.find(query).toArray();
+        res.send(result);
+    } )
+
+    app.delete('/buyers/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const result = await buyersCollection.deleteOne(query);
+        res.send(result);
+    })
 
     app.get('/buyers/admin/:email', async (req, res) => {
         const email = req.params.email;
@@ -126,12 +139,16 @@ async function run(){
         res.send({isAdmin: user?.role === 'admin'})
     })
 
+    
+
     app.get('/buyers/buyer/:email', async (req, res) => {
         const email = req.params.email;
         const query = { email }
         const user = await buyersCollection.findOne(query);
         res.send({isBuyer: user?.role === 'buyer'})
     })
+
+    
 
     app.get('/buyers/sellers/:email', async (req, res) => {
         const email = req.params.email;
