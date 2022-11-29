@@ -41,6 +41,7 @@ async function run(){
     const ordersCollection = client.db('cellIt').collection('orders');
     const buyersCollection = client.db('cellIt').collection('buyers');
     const sellerCollection = client.db('cellIt').collection('sellers');
+    const advertisedCollection = client.db('cellIt').collection('advertised');
 
     app.get('/brands', async(req, res)=>{
             const query = {}
@@ -205,6 +206,12 @@ async function run(){
         const id = req.params.id;
         const query = { _id: ObjectId(id) };
         const result = await brandCollection.deleteOne(query);
+        res.send(result);
+    })
+
+    app.post('/advertisedProduct', async (req, res) => {
+        const advertisedProduct = req.body;
+        const result = await advertisedCollection.insertOne(advertisedProduct);
         res.send(result);
     })
 
